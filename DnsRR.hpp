@@ -25,8 +25,11 @@ class DnsRR {
             TTL = 60;
             Length = 4;
             Data.resize(Length);
-            for(int i = 0; i < Length; i++)
-                Data[i] = 0x08;
+            //64.233.186.93 -> This is the IPDomain off youtube
+            Data[0] = 0x40;
+            Data[1] = 0xE9;
+            Data[2] = 0xBA;
+            Data[3] = 0x5D;
         }
 
         vector<uint8_t> GetBytes() {

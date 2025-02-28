@@ -18,10 +18,6 @@ class DnsName {
         DnsName(const vector<uint8_t> &buffer, int pos) {
 
             //Two pointers to linear complexity O(len(buffer))
-
-
-            cout << "The position init Name: " << (int)pos << endl;
-
             auto GetDomain = [&](int &pos, int IsCompress, auto&& GetDomain) -> void  {
                 while(buffer[pos] != 0) {
 
@@ -61,18 +57,17 @@ class DnsName {
             else  // un-compression
                 GetDomain(i, 0, GetDomain);
 
-            Len = i - pos;
-
-            cout << "**********************" << endl;
-            for(auto cd: Domains) 
-                cout << cd << endl;
+            for(int i = 0; i < (int)Domains.size(); i++) {
+                cout << Domains[i];
+                if(i != (int)Domains.size() -1)
+                    cout << ".";
+            }
             cout << endl;
-
-
+            
+            Len = i - pos;
         }
 
         vector<uint8_t> GetBytes() {
-
             vector<uint8_t>RetBytes;
             for(auto cd: Domains) {
                 RetBytes.push_back((int)cd.size());

@@ -43,7 +43,6 @@ class DnsServer {
                         sizeof(serverAddress)) != 0) {
                 throw std::runtime_error("Bind failed");
             }
-
             std::cout << "Server listening on " << ipAddress << ":" << port << std::endl;
         }
         void start() {
@@ -64,25 +63,21 @@ class DnsServer {
 
                 buffer[bytesRead] = 0x00;
 
-
-               for(int i = 0; i < bytesRead; i++) 
-                       std::cout << std::hex << (int)buffer[i] << " ";  // Imprime en hexadecimal
-
                std::cout << std::endl;
                std::cout << "============================" << std:: endl;
 
+
+
                DnsMessage RequestMessage = DnsMessage(buffer);
                vector<uint8_t> response = ProcessRequest(RequestMessage).GetBytes();
-               cout << "La longitud es :: " << hex << (int)response.size() << endl;
 
-               for(int i = 0; i < (int)response.size(); i++) {
-                   cout << hex << (int)response[i] << " ";
-               }
-               cout << endl;
+               // cout << "La longitud es :: " << hex << (int)response.size() << endl;
+               // for(int i = 0; i < (int)response.size(); i++) {
+               //     cout << hex << (int)response[i] << " ";
+               // }
+               // cout << endl;
 
-               cout << "Vamos a ver el ProcessRequest :) " << endl;
 
-               cout << "Terminacion de la respuesta " << endl;
                if (sendto(udpSocket, response.data(), response.size(), 0, 
                    reinterpret_cast<struct sockaddr*>(&clientAddress), sizeof(clientAddress)) == -1) {
                    perror("Failed to send response");
@@ -94,8 +89,10 @@ class DnsServer {
             DnsMessage Response(Request.Header);
 
             Response.Header.QR = 1;
-            Response.Header.AnswCount = 0;
             Response.Header.RespCode = (Response.Header.OpCode == 0x00 ? 0x00 : 0x04);
+            Response.Header.AnswCount = 0;
+            Response.Header.AddiCount = 0;
+            Response.Header.RecurAva = 0;
 
             for(auto Q: Request.Questions) {
                 DnsRR A = DnsRR(Q);

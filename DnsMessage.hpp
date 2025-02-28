@@ -59,7 +59,6 @@ class DnsMessage {
        vector<uint8_t> GetBytes() {
            vector<uint8_t> RetBytes = Header.GetBytes();
 
-           cout << "int SizeQuestion :" << (int)Questions.size() << endl;
            for(auto Question : Questions) 
                WriteToNetwork(RetBytes, Question.GetBytes());
 
