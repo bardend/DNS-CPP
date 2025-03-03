@@ -44,7 +44,9 @@ How to configure our DNS.
       }
       ```
 
-   2. Execute the program
+   2. Execute the program with root privileges
+      ```bash
+      sudo ./dns
 
 4. Configure the `etc/resolve.conf` 
 
