@@ -16,7 +16,7 @@ lrwxrwxrwx 1 root root 39 Feb 27 10:00 /etc/resolv.conf -> ../run/systemd/resolv
 
 Here *l* in *lrwxrwxrwx* indicates a symbolic link.
 
-How to configure our DNS.
+How to configure our **DNS**.
 
 1. Deactivate a systemd-resolved :
    ```bash	
@@ -30,26 +30,6 @@ How to configure our DNS.
    sudo rm /etc/resolv.conf
    sudo nano /etc/resolv.conf
    ```
-
-3. Configure the address and the port of our program.
-
-   1. The code of the program is a reference [RFC 1035 DNS](https://datatracker.ietf.org/doc/html/rfc1035).
-
-   2. Changue the parameters in main.cpp, in this case is localhost and the port is 53 for standard DNS queries.
-
-      ```cpp
-      #main.cpp
-      int main() {
-          DnsServer server("0.0.0.0", 53);
-          server.start();
-          return 0;
-      }
-      ```
-
-   3. Execute the program with root privileges
-      ```bash
-      sudo ./dns
-      ```
 
 4. Configure the `etc/resolve.conf` 
 
@@ -103,8 +83,26 @@ sequenceDiagram
 7. Run the container 
 
    ```bash
-   docker image build -t dns-server:v1
+   docker image build -t dns-server:v1 .
    docker container run --name dns-server -p 53:53/udp -p 53:53/tcp dns-server:v1 
    ```
 
    
+
+8. Ok, of course you are without internet good bye. It's a joke, just change the DNS resolution handled on Linux system ```127.0.0.53```, enable and start.
+
+   ```bash
+   sudo nvim resolv.conf
+   ```
+
+   ```bash
+   nameserver 127.0.0.53
+   #nameserver 127.0.0.1
+   options edns0
+   search .
+   ```
+
+   ```bash
+   sudo systemctl enable systemd-resolved.service
+   sudo systemctl start systemd-resolved.service
+   ```
