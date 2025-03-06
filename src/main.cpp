@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-    DnsServer server("127.0.0.1", 53);
+    DnsServer server("0.0.0.0", 53);
     server.start();
     return 0;
 }
