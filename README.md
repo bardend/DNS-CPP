@@ -33,20 +33,23 @@ How to configure our DNS.
 
 3. Configure the address and the port of our program.
 
-   1. Changue the parameters in main.cpp, in this case is localhost and the port is 53 for standard DNS queries.
+   1. The code of the program is a reference [RFC 1035 DNS](https://datatracker.ietf.org/doc/html/rfc1035).
+
+   2. Changue the parameters in main.cpp, in this case is localhost and the port is 53 for standard DNS queries.
 
       ```cpp
       #main.cpp
       int main() {
-          DnsServer server("127.0.0.1", 53);
+          DnsServer server("0.0.0.0", 53);
           server.start();
           return 0;
       }
       ```
 
-   2. Execute the program with root privileges
+   3. Execute the program with root privileges
       ```bash
       sudo ./dns
+      ```
 
 4. Configure the `etc/resolve.conf` 
 
@@ -59,8 +62,49 @@ How to configure our DNS.
    nameserver 127.0.0.1 #To send dns query to our dns server
    options edns0 trust-ad
    search .
-   
+   ```
+
+
+5. Develop the application container.
+   ```dockerfile
+   ...
+   #Stage 2, only need the binary file and OS since libcap2-bin for the root privileges 
+   RUN apt-get update && apt-get install -y libcap2-bin
+   #Get privileges because create a bind socket to listen in the port 53
+   RUN setcap 'cap_net_bind_service=+ep' /dns
+   EXPOSE 53/udp 53/tcp
+   #Run the program :)
+   CMD ["/dns"]
    ```
 
    
 
+6. Sequential Diagram
+
+```mermaid
+sequenceDiagram    
+	participant Browser as Google
+	participant OS as Host
+    participant Docker
+    participant DNS Server
+	Browser ->> OS : (DNS Query What is the IP of  www.uni.edu.pe)
+    Note over OS: See /etc/resolv.conf<br/>nameserver 127.0.0.1
+    OS->>Docker: Send query  127.0.0.1:53
+    Note over Docker: Map port<br/>-p 53:53/udp
+    Docker->>DNS Server: Forward port consultation 53 of container
+    Note over DNS Server: Server listen in **0.0.0.0:53**<br/>(all interfaces)
+    DNS Server->>DNS Server: Resolve the DNS Query
+    DNS Server->>Docker: DNS Response (IP: 161.132.9.122)
+
+```
+
+
+
+7. Run the container 
+
+   ```bash
+   docker image build -t dns-server:v1
+   docker container run --name dns-server -p 53:53/udp -p 53:53/tcp dns-server:v1 
+   ```
+
+   
