@@ -47,6 +47,7 @@ How to configure our **DNS**.
 
 5. Develop the application container.
    ```dockerfile
+   #Dockerfile
    ...
    #Stage 2, only need the binary file and OS since libcap2-bin for the root privileges 
    RUN apt-get update && apt-get install -y libcap2-bin
@@ -56,9 +57,9 @@ How to configure our **DNS**.
    #Run the program :)
    CMD ["/dns"]
    ```
-
    
-
+   
+   
 6. Sequential Diagram
 
 ```mermaid
@@ -103,6 +104,9 @@ sequenceDiagram
    ```
 
    ```bash
-   sudo systemctl enable systemd-resolved.service
-   sudo systemctl start systemd-resolved.service
+   
+   
+   
+   
+   
    ```

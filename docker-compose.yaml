@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  dns-server:
+    build: . #Build the image from dockerfile in this directory
+    image: dns-server:v1  #Name and tag image after build
+    container_name: dns-server
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    restart: unless-stopped
+
