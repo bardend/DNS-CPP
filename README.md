@@ -1,10 +1,12 @@
 # DNS 
 
-In this project we created a program that changes the operating system's default **systemd-resolved** to our DNS implementation.
+In this project we created a program that changes the operating system's default **systemd-resolved** to our **DNS** implementation.
 
 
 
-It's just to modifying the file`/etc/resolv.conf` .
+## Configuration
+
+Here I only explain how the configuration work, **I recommend just only reading and understanding, because in running I automate this and you will simple execute it with a few commands**.
 
 In modern Linux systems `/etc/resolv.conf` often points to 127.0.0.53, and this is a simbolic link 
 
@@ -88,22 +90,47 @@ sequenceDiagram
    docker container run --name dns-server -p 53:53/udp -p 53:53/tcp dns-server:v1 
    ```
 
-   
 
-8. Ok, of course you are without internet good bye. It's a joke, just change the DNS resolution handled on Linux system ```127.0.0.53```, enable and start.
 
-   ```bash
-   sudo nvim resolv.conf
-   ```
 
-   ```bash
-   nameserver 127.0.0.53
-   #nameserver 127.0.0.1
-   options edns0
-   search .
-   ```
+## Running
 
-   ```bash
-   
-   
-   ```
+Install a python library for the banner `dns server`.
+
+```bash
+pip install pyfiglet
+```
+
+Run the file `your_program.py`
+
+```bash
+python3 your_program.py
+```
+
+**DNS server** is running, but the *docker-compose up* execution is blocking, so it is in another process(sub process),  so if you want to see its output. Open other terminal and type.
+
+```bash
+docker-compose logs -f dns-server
+```
+
+If you want to stop the server and enable ``systemd-resolved.service`` only press `Enter` in this terminal.
+
+```bash
+bardend@bardend:~/Documents/Cursos/8/Networks/c++/DockerDNS$ python3 your_program.py 
+
+🛑 Stopping systemd-resolved...
+🔧 Configuring /etc/resolv.conf...
+✅ DNS configuration applied.
+
+======================================================================
+ ___  _  _ ___   ___ ___ _____   _____ ___ 
+|   \| \| / __| / __| __| _ \ \ / / __| _ \
+| |) | .` \__ \ \__ \ _||   /\ V /| _||   /
+|___/|_|\_|___/ |___/___|_|_\ \_/ |___|_|_\
+                                        
+======================================================================
+
+Press ENTER to stop the server and restart systemd-resolved.
+
+```
+
