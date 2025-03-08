@@ -1,14 +1,12 @@
 # DNS 
 
-In this project we created a program that changes the operating system's default **systemd-resolved** to our **DNS** implementation.
-
-
+In this project, I run the **DNS server** in a Docker container, so I modify my OS (Linux) systemd-resolver for localhost loopback and send the DNS query to the container and resolves this.
 
 ## Configuration
 
 Here I only explain how the configuration work, **I recommend just only reading and understanding, because in running I automate this and you will simple execute it with a few commands**.
 
-In modern Linux systems `/etc/resolv.conf` often points to 127.0.0.53, and this is a simbolic link 
+In modern Linux systems `/etc/resolv.conf` often points to 127.0.0.53, and this is a symbolic link .
 
 ```bash
 ls -l /etc/resolv.conf
@@ -131,6 +129,6 @@ bardend@bardend:~/Documents/Cursos/8/Networks/c++/DockerDNS$ python3 your_progra
 ======================================================================
 
 Press ENTER to stop the server and restart systemd-resolved.
-
 ```
 
+Copyright (c) 2025  (UNI)
