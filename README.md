@@ -132,3 +132,5 @@ Press ENTER to stop the server and restart systemd-resolved.
 ```
 
 Copyright (c) 2025  (UNI)
+
+Author: Me
