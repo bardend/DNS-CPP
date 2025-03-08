@@ -39,7 +39,7 @@ How to configure our **DNS**.
    # ..........
    
    #nameserver 127.0.0.53
-   nameserver 127.0.0.1 #To send dns query to our dns server
+   nameserver 127.0.0.1 #To send dns query to our dns server(loopback)
    options edns0 trust-ad
    search .
    ```
@@ -104,9 +104,6 @@ sequenceDiagram
    ```
 
    ```bash
-   
-   
-   
    
    
    ```
