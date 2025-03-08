@@ -63,7 +63,6 @@ def run_docker():
     print("\n" + "="*70)
     print(f.renderText("DNS SERVER"))
     print("="*70)
-    time.sleep(3)
     process = subprocess.Popen(
         ["docker-compose", "up", "--build"],
         stdout=subprocess.PIPE,
